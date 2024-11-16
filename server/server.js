@@ -3,6 +3,7 @@ const mongoose = require("mongoose")
 const cookieParser = require("cookie-parser")
 const cors = require('cors');
 
+const authRouter = require('./routes/auth/auth-route')
 
 const app = express()
 const PORT = process.env.PORT || 3000
@@ -35,6 +36,21 @@ app.use(cors(
 ))
 app.use(cookieParser())
 app.use(express.json())
+
+
+app.use('/auth',authRouter)
+
+
+app.use((err,req,res,next)=>{
+  let statuscode = err.statuscode || 500
+  let message = err.message || "Some Error occured"
+
+  res.status(statuscode).json({
+    success : "false",
+    message,
+    statuscode,
+  })
+})
 
 app.listen(PORT,()=>{
     console.log("Server is running on port",PORT)
