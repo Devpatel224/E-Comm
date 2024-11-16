@@ -9,7 +9,7 @@ const registerUser = async (req,res,next) => {
     const {username,email,password} = req.body
     try {
         const hashPassword = await bcrypt.hash(password,12)
-        const newUser = new userModel.create({username,email,password:hashPassword})
+        const newUser = await userModel.create({username,email,password:hashPassword})
 
         console.log(newUser)
 
