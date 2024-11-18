@@ -49,16 +49,40 @@ const registerUser = async (req, res, next) => {
 
 
 // login
-const login = async (req, res, next) => {
+const loginUser = async (req, res, next) => {
   const { email, password } = req.body;
   try {
     if (!email || !password) {
         return next(createCustomeError(400, "All fields are required"));
     }
 
+    const exitedUser = await userModel.findOne({email})
+    if(!exitedUser){
+        return next(createCustomeError(401,"User Doesn't Exits"))
+    }
+
+    const checkpasswordMatch = bcrypt.compare(password,exitedUser.password)
+    if(!checkpasswordMatch){
+        return next(createCustomeError(401,"Invalid Credentials"))
+    }
+
+    const token = jwt.sign({
+        id:exitedUser._id,
+        role:exitedUser.role,
+        email:exitedUser.email
+    },process.env.JWT_KEY,{expiresIn : '60min'})
+
+    res.cookie('token',token,{httpOnly:true,secure:false}).json({
+        success:"True",
+        message:"Logged In Successfully",
+        user:{
+            email:exitedUser.email,
+            role:exitedUser.role,
+            id:exitedUser._id
+        }
+    }) 
     
   } catch (e) {
-    console.log(e);
     next(e);
   }
 };
@@ -67,4 +91,4 @@ const login = async (req, res, next) => {
 
 // authmiddleware
 
-module.exports = { registerUser };
+module.exports = { registerUser , loginUser };
