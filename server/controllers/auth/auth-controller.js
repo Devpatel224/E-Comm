@@ -17,7 +17,7 @@ const registerUser = async (req, res, next) => {
             $or:[{email},{username}],
         });
         if(exitedUser){
-            return next(createCustomeError(401,"Invalid Credentials"))
+            return next(createCustomeError(401,"User Already Exits"))
         }          
      
         const hashPassword = await bcrypt.hash(password, 12);
@@ -52,6 +52,11 @@ const registerUser = async (req, res, next) => {
 const login = async (req, res, next) => {
   const { email, password } = req.body;
   try {
+    if (!email || !password) {
+        return next(createCustomeError(400, "All fields are required"));
+    }
+
+    
   } catch (e) {
     console.log(e);
     next(e);

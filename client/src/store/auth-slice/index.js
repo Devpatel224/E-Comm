@@ -9,11 +9,18 @@ const initialState = {
 };
 
 export const registerUser = createAsyncThunk('/auth/register',
-    async(formData)=>{
-        const res = await axios.post("http://localhost:3000/auth/register",formData,{
+    async(formData,{rejectWithValue})=>{
+        try{const res = await axios.post("http://localhost:3000/auth/register",formData,{
             withCredentials: true,
         })
-        return res.data;
+        return res.data;}
+        catch(e){
+            if(e.response && e.response.data){
+                return rejectWithValue(e.response.data.message || "Registration Fails")
+            }else{
+                return rejectWithValue("Some Error Occurs")
+            }
+        }
     }
 )
 
