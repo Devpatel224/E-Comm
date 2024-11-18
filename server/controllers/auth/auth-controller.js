@@ -17,7 +17,7 @@ const registerUser = async (req, res, next) => {
             $or:[{email},{username}],
         });
         if(exitedUser){
-            next(createCustomeError(401,"Invalid Credentials"))
+            return next(createCustomeError(401,"Invalid Credentials"))
         }          
      
         const hashPassword = await bcrypt.hash(password, 12);
