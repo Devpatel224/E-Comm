@@ -61,9 +61,9 @@ const loginUser = async (req, res, next) => {
         return next(createCustomeError(401,"User Doesn't Exits"))
     }
 
-    const checkpasswordMatch = bcrypt.compare(password,exitedUser.password)
+    const checkpasswordMatch =await bcrypt.compare(password,exitedUser.password)
     if(!checkpasswordMatch){
-        return next(createCustomeError(401,"Invalid Credentials"))
+        return next(createCustomeError(401,"Invalid Credentials"));
     }
 
     const token = jwt.sign({
