@@ -55,7 +55,7 @@ function Login() {
       </div>
       <CommonForm 
       formControls={loginFormControls}
-      buttonText={'Create Account'}
+      buttonText={'Login'}
       formData={formData}
       setFormData={setFormData}
       onsubmit={onsubmit}

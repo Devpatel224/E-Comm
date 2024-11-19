@@ -15,12 +15,19 @@ import Checkout from './pages/shopping-view/checkout'
 import Account from './pages/shopping-view/Account'
 import CheckAuth from './components/common/CheckAuth'
 import UnAuthPage from './pages/unauth-page/UnAuthPage'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
+import { useEffect } from 'react'
+import { checkAuth } from './store/auth-slice'
 
 function App() {
 
-  const {isAuthenticated,user} = useSelector(state => state.auth)
-  
+  const {isAuthenticated,user } = useSelector(state => state.auth)
+  const dispatch = useDispatch()
+
+  useEffect(()=>{
+    dispatch(checkAuth())
+  },[dispatch])
+
   return (
     <>    
 

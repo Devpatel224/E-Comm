@@ -97,7 +97,8 @@ const logoutUser = (req,res)=>{
 
 // authmiddleware
 const authmiddleware = async (req,res,next)=>{
-    const token = req.cookie.token;
+
+    const token = req.cookies.token;
     if(!token){
         return next(createCustomeError(401,"Unauthorised user!"))
     }
