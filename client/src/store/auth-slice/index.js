@@ -4,7 +4,7 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 
 const initialState = {
 isAuthenticated : false,
-isLoading:false,
+isLoading:true,
 user:null
 };
 
