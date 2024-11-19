@@ -96,6 +96,20 @@ const logoutUser = (req,res)=>{
 }
 
 // authmiddleware
+const authmiddleware = async (req,res,next)=>{
+    const token = req.cookie.token;
+    if(!token){
+        return next(createCustomeError(401,"Unauthorised user!"))
+    }
 
+    try{
+        const decoded = jwt.verify(token,process.env.JWT_KEY);
+        req.user = decoded;
+        next()
+    }
+    catch(e){
+        return next(e)
+    }
+}
 
-module.exports = { registerUser , loginUser,logoutUser };
+module.exports = { registerUser , loginUser,logoutUser ,authmiddleware };
