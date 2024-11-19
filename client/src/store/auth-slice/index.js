@@ -48,33 +48,34 @@ const authSlice = createSlice({
     reducers:{
         setUser:(state,action)=>{
 
-        },
-        extraReducers:(builder)=>{
-            builder
-            .addCase(registerUser.pending,(state)=>{
-                state.isLoading  = true
-            }).addCase(registerUser.fulfilled,(state,action)=>{
-                state.isLoading  = false
-                state.user = null
-                state.isAuthenticated = false
-            }).addCase(registerUser.rejected,(state,action)=>{
-                state.isLoading = false
-                state.user = null
-                state.isAuthenticated = false
-            })
-            .addCase(loginUser.pending,(state)=>{
-                state.isLoading  = true
-            }).addCase(loginUser.fulfilled,(state,action)=>{
-                state.isLoading  = false
-                state.user = action.payload.user
-                state.isAuthenticated = true
-            }).addCase(loginUser.rejected,(state,action)=>{
-                state.isLoading = false
-                state.user = null
-                state.isAuthenticated = false
-            })
-        }
-    }
+        },        
+    },
+    extraReducers:(builder)=>{
+        builder
+        .addCase(registerUser.pending,(state)=>{
+            state.isLoading  = true
+        }).addCase(registerUser.fulfilled,(state,action)=>{
+            state.isLoading  = false
+            state.user = null
+            state.isAuthenticated = false
+        }).addCase(registerUser.rejected,(state,action)=>{
+            state.isLoading = false
+            state.user = null
+            state.isAuthenticated = false
+        })
+        .addCase(loginUser.pending,(state)=>{
+            state.isLoading  = true
+        }).addCase(loginUser.fulfilled,(state,action)=>{
+            console.log(action.payload)
+            state.isAuthenticated = true
+            state.isLoading  = false
+            state.user = action.payload.user
+        }).addCase(loginUser.rejected,(state,action)=>{
+            state.isLoading = false
+            state.user = null
+            state.isAuthenticated = false
+        })
+    }   
 })
 
 export const {setUser} = authSlice.actions
