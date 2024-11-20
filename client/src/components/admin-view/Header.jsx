@@ -19,7 +19,7 @@ function Header({setOpen}) {
          }
       })
    }
-   
+
   return (
    <header className='flex items-center justify-between px-4 border-b bg-background '>
       <Button onClick={()=>setOpen(true)} className='lg:hidden sm:block mb-5 mt-2'>

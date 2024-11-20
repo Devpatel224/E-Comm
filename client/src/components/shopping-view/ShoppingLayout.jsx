@@ -4,7 +4,7 @@ import ShoppingHeader from './ShoppingHeader'
 
 function ShoppingLayout() {
   return (
-    <div className='flex flex-col bg-white overflow-hidden'>
+    <div className='flex flex-col bg-white overflow-hidden w-full'>
       {/* common header */}
       <ShoppingHeader/>
       <main className='felx flex-col w-full'>
