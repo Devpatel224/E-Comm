@@ -6,6 +6,8 @@ import { addProductFormElements } from '@/config'
 import ImageUpload from '@/components/admin-view/ImageUpload'
 import { useDispatch, useSelector } from 'react-redux'
 import { addNewProduct, fetchAllProducts } from '@/store/admin/products-slice'
+import { DiscAlbum } from 'lucide-react'
+import { useToast } from '@/hooks/use-toast'
 
 const initialeFormData = {
   image: null,
@@ -27,12 +29,21 @@ function AdminProducts() {
 
   const {products} = useSelector(state => state.adminProducts)
   const dispatch = useDispatch()
+  const {toast} = useToast()
 
   const onSubmit = (e) => {
     e.preventDefault()
     dispatch(addNewProduct({...formData,image:uploadedImageUrl})).then(data =>{
       console.log(data)
-      
+      if(data?.payload?.success){
+        dispatch(fetchAllProducts())
+        setOpenCreateProductsDialog(false)
+        setImageFile(null)
+        setFormData(initialeFormData)
+        toast({
+          title : "Product Added Successfully"
+        })
+      }
     })
 
   }
