@@ -23,8 +23,8 @@ function AdminProducts() {
   const [uploadedImageUrl,setUploadedImageUrl] = useState('')
 
   const onSubmit = ()=>{
-
   }
+
   return (
      <Fragment>
       <div className='mb-5 w-full flex justify-end'>
