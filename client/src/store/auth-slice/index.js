@@ -61,6 +61,23 @@ export const checkAuth = createAsyncThunk('/auth/check-auth',
     }
 )
 
+export const logoutUser = createAsyncThunk('/auth/logout',
+    async(_,{rejectWithValue})=>{
+        try{const res = await axios.get("http://localhost:3000/auth/logout",{
+            withCredentials: true,
+        })
+
+        return res.data;
+    }
+        catch(e){
+            if(e.response && e.response.data){
+                return rejectWithValue(e.response.data.message || "Login Fails")
+            }else{
+                return rejectWithValue("Some Error Occurs")
+            }
+        }
+    }
+)
 
 const authSlice = createSlice({
     name:'auth',
@@ -101,6 +118,11 @@ const authSlice = createSlice({
             state.isLoading = false
             state.user = null
             state.isAuthenticated = false
+        })
+        .addCase(logoutUser.fulfilled,(state,action)=>{
+            state.isLoading  = false
+            state.user = null;
+            state.isAuthenticated = false;
         })
     }   
 })
