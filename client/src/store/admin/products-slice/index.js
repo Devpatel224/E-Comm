@@ -25,11 +25,11 @@ export const addNewProduct = createAsyncThunk('/products/addnewproduct',
             else return rejectWithValue("Something Went Wrong")
         }
 })
+
 export const fetchAllProducts = createAsyncThunk('/products/fetchAllProducts',
-    async ({rejectWithValue})=>{
-        try{const res = await axios.get("http://localhost:3000/admin/products/get",{
-            withCredentials: true,
-        })
+    async ( _,{rejectWithValue})=>{
+        try{const res = await axios.get("http://localhost:3000/admin/products/get")
+
         return res?.data
     }
         catch(err){
@@ -87,8 +87,7 @@ const AdminProductsSlice = createSlice({
         })
         .addCase(fetchAllProducts.fulfilled,(state,action)=>{
             state.isLoading = false
-            console.log(action.payload)
-            state.products = action.payload
+            state.products = action.payload.data
         })
         .addCase(fetchAllProducts.rejected,(state,action)=>{
             state.isLoading = false

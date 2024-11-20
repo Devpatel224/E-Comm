@@ -4,9 +4,10 @@ import { Input } from "../ui/input"
 import { Label } from "../ui/label"
 import { Button } from "../ui/button"
 import axios from "axios"
+import { Skeleton } from "../ui/skeleton"
 
 
-function ImageUpload({ imageFile, setImageFile, uploadedImageUrl, setUploadedImageUrl }) {
+function ImageUpload({ imageFile, setImageFile, uploadedImageUrl, setUploadedImageUrl,imageLoadingState }) {
 
     const inputRef = useRef(null)
 
@@ -51,6 +52,8 @@ function ImageUpload({ imageFile, setImageFile, uploadedImageUrl, setUploadedIma
         if (imageFile !== null) uploadImagetoCloudinary()
     }, [imageFile])
 
+    
+
     return (
         <div className='w-full max-w-md mx-auto mt-4'>
             <Label className='text-lg font-semibold mb-2 block'>Upload Image</Label>
@@ -62,7 +65,9 @@ function ImageUpload({ imageFile, setImageFile, uploadedImageUrl, setUploadedIma
                         <Label htmlFor='image-upload' className='flex flex-col items-center justify-center h-32 cursor-pointer'>
                             <UploadCloudIcon className="w-10 h-10 text-muted-foreground mb-5" />
                             <span>Drag & Drop or click to upload Image</span>
-                        </Label> : <div className="flex items-center justify-between">
+                        </Label> : (
+                             imageLoadingState ? <Skeleton className='bg-gray-200' />:
+                            <div className="flex items-center justify-between">
                             <div className="flex items-center">
                                 <FileIcon className='w-8 text-primary mr-2 h-8' />
                             </div>
@@ -72,7 +77,7 @@ function ImageUpload({ imageFile, setImageFile, uploadedImageUrl, setUploadedIma
                                     <span className="sr-only">Remove File</span>
                                 </XIcon>
                             </Button>
-                        </div>
+                        </div>)
                 }
             </div>
         </div>

@@ -1,8 +1,8 @@
 const { imageUploadUtils } = require("../../helpers/cloudinary");
-const {productModel} = require("../../models/Product")
+const productModel = require("../../models/Product")
 const {createCustomeError} = require("../../utils/customeError")
 
-const handleImageUpload = async (req, res) => {
+const handleImageUpload = async (req, res , next) => {
   try {
     const b64 = Buffer.from(req.file.buffer).toString("base64");
     const url = "data:" + req.file.mimetype + ";base64," + b64;
@@ -19,11 +19,11 @@ const handleImageUpload = async (req, res) => {
 };
 
 // add a new product
-const addProduct = async (req, res) => {
+const addProduct = async (req, res , next) => {
   try {
     const {image, title, description, category, brand, price, salePrice, totalStock} = req.body
 
-      const createdProduct = await productModel({image, title, description, category, brand, price, salePrice, totalStock})
+      const createdProduct = await productModel.create({image, title, description, category, brand, price, salePrice, totalStock})
 
       res.status(201).json({
         success:true,
@@ -35,22 +35,22 @@ const addProduct = async (req, res) => {
 };
 
 // fetch all products
-const fetchProducts = async (req, res) => {
+const fetchProducts = async (req, res , next) => {
     try {  
-      const listOfProducts = await productModel.find({});
+      const listOfProducts = await productModel.find();
       res.status(201).json({
         success:true,
         data:listOfProducts
       })
 
     } catch (err) {
-      next(err);
+      return next(err);
     }
   };
  
 
 // edit a product
-const editProduct = async (req, res) => {
+const editProduct = async (req, res , next) => {
     try {
       const {image, title, description, category, brand, price, salePrice, totalStock} = req.body
         const {id} = req.params
@@ -80,7 +80,7 @@ const editProduct = async (req, res) => {
 
 // delete a product
 
-const deleteProduct = async (req, res) => {
+const deleteProduct = async (req, res , next) => {
     try {
       const {id} = req.params
       const product = await productModel.findByIdAndDelete(id)
