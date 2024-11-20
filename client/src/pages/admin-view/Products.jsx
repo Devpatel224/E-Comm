@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { addNewProduct, fetchAllProducts } from '@/store/admin/products-slice'
 import { DiscAlbum } from 'lucide-react'
 import { useToast } from '@/hooks/use-toast'
+import AdminProductsTile from '@/components/admin-view/AdminProductsTile'
 
 const initialeFormData = {
   image: null,
@@ -26,6 +27,7 @@ function AdminProducts() {
   const [imageFile, setImageFile] = useState(null)
   const [uploadedImageUrl, setUploadedImageUrl] = useState('')
   const [imageLoadingState, setImageLoadingState] = useState(false)
+  const [currentEditedId,setCurrentEditedId] = useState(null)
 
   const {products} = useSelector(state => state.adminProducts)
   const dispatch = useDispatch()
@@ -60,14 +62,20 @@ function AdminProducts() {
         <Button onClick={() => setOpenCreateProductsDialog(true)}>Add new Product</Button>
       </div>
       <div className='grid gap4 md:grid-cols-3 lg:grid-cols-4'>
+          {
+            products && products.length > 0 ? products.map((product)=><AdminProductsTile product={product} setCurrentEditedId={setCurrentEditedId} setOpenCreateProductsDialog={setOpenCreateProductsDialog} setFormData={setFormData}/>) : null
+          }
+        </div>
         <Sheet open={openCreateProductsDialog} onOpenChange={() => {
           setOpenCreateProductsDialog(false)
+          setCurrentEditedId(null)
+          setFormData(initialeFormData)
         }}>
           <SheetContent side='right' className='overflow-hidden overflow-y-scroll'>
             <SheetTitle>Add New Product</SheetTitle>
             <ImageUpload imageFile={imageFile} setImageFile={setImageFile} uploadedImageUrl={uploadedImageUrl} setUploadedImageUrl={setUploadedImageUrl} 
             imageLoadingState={imageLoadingState}
-    
+            isEditMode={currentEditedId}
             />
             <div className='py-6'>
               <CommonForm
@@ -80,7 +88,6 @@ function AdminProducts() {
             </div>
           </SheetContent>
         </Sheet>
-      </div>
     </Fragment>
   )
 }
