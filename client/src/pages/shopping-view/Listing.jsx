@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import Filter from '@/components/shopping-view/Filter'
 import { DropdownMenu } from '@/components/ui/dropdown-menu'
 import { ArrowUpDown } from 'lucide-react'
@@ -6,8 +6,14 @@ import { Button } from '@/components/ui/button'
 import { DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
 import { DropdownMenuContent, DropdownMenuRadioGroup, DropdownMenuRadioItem } from '@/components/ui/dropdown-menu'
 import { sortOptions } from '@/config'
+import { useDispatch } from 'react-redux'
 
 function Listing() {
+  const dispatch = useDispatch()
+  useEffect(()=>{
+    dispatch(fetchAllProducts())
+  },[dispatch])
+  
   return (
      <div className='grid grid-cols-1 md:grid-cols-[300px_1fr] gap-6 p-4 md:p-6'>
        <Filter/>

@@ -1,8 +1,11 @@
 import { Badge } from 'lucide-react'
 import React from 'react'
-import { CardContent, CardFooter } from '../ui/card'
+import { Card, CardContent, CardFooter } from '../ui/card'
 import { Button } from '../ui/button'
 import Image from 'next/image'
+import { CardTitle } from '../ui/card'
+
+
 
 function ProductTile({product}) {
   return (

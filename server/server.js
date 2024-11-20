@@ -5,6 +5,7 @@ const cors = require('cors');
 
 const authRouter = require('./routes/auth/auth-route')
 const adminProductsRouter = require("./routes/admin/products-routes")
+const shopProductsRouter = require("./routes/shop/products-routes")
 
 const app = express()
 const PORT = process.env.PORT || 3000
@@ -45,7 +46,7 @@ app.use(express.urlencoded({extended:true}))
 
 app.use('/auth',authRouter)
 app.use('/admin/products',adminProductsRouter)
-
+app.use('/shop/products',shopProductsRouter)
 
 app.use((err,req,res,next)=>{
   let statuscode = err.statuscode || 500
