@@ -60,12 +60,7 @@ export const editAProduct = createAsyncThunk('/products/editAProduct',
 
 export const deleteProduct = createAsyncThunk('/products/deleteproduct',
     async (id,{rejectWithValue})=>{
-        try{const res = await axios.delete(`http://localhost:3000/admin/products/delete/${id}`,formData,{
-            withCredentials: true,
-            headers : {
-                'Content-Type' : 'application/json'
-            }
-        })
+        try{const res = await axios.delete(`http://localhost:3000/admin/products/delete/${id}`)
         return res?.data
     }
         catch(err){
