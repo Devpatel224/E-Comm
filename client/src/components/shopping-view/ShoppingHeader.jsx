@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom"
-import { HousePlug ,Menu , ShoppingCart , User , LogOut , UserCog } from "lucide-react"
+import { HousePlug ,Menu , ShoppingCart ,  LogOut , UserCog } from "lucide-react"
 import { Sheet ,SheetContent,SheetTrigger } from "../ui/sheet"
 import { Button } from "../ui/button"
 import { useSelector } from "react-redux"
