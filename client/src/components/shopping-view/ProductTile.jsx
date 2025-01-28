@@ -12,7 +12,7 @@ function ProductTile({product}) {
     <Card className='w-full max-w-80 mx-auto hover:scale-105 transition-all duration-300'>
        <div>
         <div className='relative overflow-hidden'>
-            <img src={product.image} alt={product.title} fill className='w-full h-[300px] rounded-t-lg object-cover hover:scale-110 transition-all duration-500' />
+            <img src={product.image} alt={product.title}  className='w-full h-[300px] rounded-t-lg object-cover hover:scale-110 transition-all duration-500' />
             {
                 product.salePrice > 0 ?
                 <Badge className='absolute top-2 left-2 bg-red-500 hover:bg-red-600'>Sale</Badge> : null 
