@@ -9,12 +9,32 @@ import { sortOptions } from '@/config'
 import { useDispatch, useSelector } from 'react-redux'
 import { fetchAllFilteredProducts } from '@/store/shop/product-slice'
 import ProductTile from '@/components/shopping-view/ProductTile'
+import { useSearchParams } from 'react-router-dom'
+
+function createSearchParamsHelper(filters){
+  let queryParams = []
+
+  for(const [key,value] of Object.entries(filters)){
+    console.log("hie " , value);
+    if(Array.isArray(value) && value.length > 0){
+      const paramValue = value.join(',')
+        
+      queryParams.push(`${key}=${encodeURIComponent(paramValue)}`)
+    }
+  }
+
+  console.log(queryParams , "queryparams");
+  
+  return queryParams.join('&')
+}
+
 
 function Listing() {
   const dispatch = useDispatch()
   const {products} = useSelector((state)=>state.shopProducts)
   const [filters, setFilters] = useState({})
-  const [sort, setSort] = useState(null)
+  const [sort, setSort] = useState(null) 
+  const [searchParams,setSearchParams] = useSearchParams()
 
   function handleSort(value){
     setSort(value)
@@ -47,11 +67,19 @@ function Listing() {
   useEffect(()=>{
     dispatch(fetchAllFilteredProducts())
   },[dispatch])
+
+  useEffect(()=>{
+    if(filters && Object.keys(filters).length > 0){
+      const createQueryString = createSearchParamsHelper(filters)
+      // setSearchParams(createQueryString)  
+      setSearchParams(new URLSearchParams(createQueryString))
+    }
+  },[filters])
   
-  console.log(filters,"Filters")
+  console.log(filters, searchParams ,"Filters")
  
   return (
-     <div className='grid grid-cols-1 md:grid-cols-[300px_1fr] gap-6 p-4 md:p-6'>
+     <div className='grid grid-cols-1 md:grid-cols-[200px_1fr] gap-6 p-4 md:p-6'>
        <Filter filters={filters} handleFilter={handleFilter}/>
        <div className='bg-background w-full rounded-lg shadow-sm'>
             <div className='p-4 border-b flex  items-center justify-between'>
