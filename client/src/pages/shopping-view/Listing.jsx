@@ -15,10 +15,11 @@ function createSearchParamsHelper(filters){
   let queryParams = []
 
   for(const [key,value] of Object.entries(filters)){
-    console.log("hie " , value);
+    
     if(Array.isArray(value) && value.length > 0){
-      const paramValue = value.join(',')
+      const paramValue = value.join(',')  
         
+      console.log(paramValue , "paramValue");
       queryParams.push(`${key}=${encodeURIComponent(paramValue)}`)
     }
   }
@@ -65,8 +66,8 @@ function Listing() {
  },[])
 
   useEffect(()=>{
-    dispatch(fetchAllFilteredProducts())
-  },[dispatch])
+     dispatch(fetchAllFilteredProducts({filterParams : filters,sortParams : sort}))
+  },[dispatch,sort,filters])
 
   useEffect(()=>{
     if(filters && Object.keys(filters).length > 0){
@@ -77,6 +78,7 @@ function Listing() {
   },[filters])
   
   console.log(filters, searchParams ,"Filters")
+  
  
   return (
      <div className='grid grid-cols-1 md:grid-cols-[200px_1fr] gap-6 p-4 md:p-6'>
