@@ -10,6 +10,8 @@ import { Avatar , AvatarFallback  } from "../ui/avatar"
 import { logoutUser } from "@/store/auth-slice"
 import { useToast } from '@/hooks/use-toast'
 import { useDispatch } from "react-redux"
+import CartWrapper from "./CartWrapper"
+import { useState } from "react"
 
 const MenuItems = ()=>{
   return <nav className="flex flex-col mb-3 lg:mb-0 gap-6 lg:items-center lg:flex-row">
@@ -22,6 +24,8 @@ const MenuItems = ()=>{
 const HeaderRightContent = ()=>{
 
   const {user} = useSelector(state=>state.auth)
+  const [openCartSheet, setOpenCartSheet] = useState(false)
+
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const {toast} = useToast()
@@ -37,10 +41,14 @@ const HeaderRightContent = ()=>{
   }
 
   return <div className="flex lg:items-center lg:flex-row flex-col gap-2">
-      <Button variant='outline' size='icon' >
+      <Sheet open={openCartSheet} onOpenChange={()=>setOpenCartSheet(false)}> 
+      <Button onClick={()=>setOpenCartSheet(true)} variant='outline' size='icon' >
       <ShoppingCart className="w-6 h-6"/>
       <span className="sr-only">User Cart</span>
       </Button>
+      <CartWrapper />
+      </Sheet>
+
       <DropdownMenu >
         <DropdownMenuTrigger asChild>
           <Avatar className="bg-black">
@@ -68,7 +76,7 @@ const HeaderRightContent = ()=>{
 
 function ShoppingHeader() {
   const {isAuthenticated , user} = useSelector(state=>state.auth)
-  
+   
   return (
     <header className='sticky  top-0 z-40 w-full border-b bg-background'>
       <div className='h-16 flex items-center justify-between px-4 md:px6'>
