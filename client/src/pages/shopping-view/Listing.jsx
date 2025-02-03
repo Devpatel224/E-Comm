@@ -10,6 +10,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { fetchAllFilteredProducts , fetchProductDetails} from '@/store/shop/product-slice'
 import ProductTile from '@/components/shopping-view/ProductTile'
 import { useSearchParams } from 'react-router-dom'
+import ProductsDetails from '@/components/shopping-view/ProductsDetails'
 
 function createSearchParamsHelper(filters){
   let queryParams = []
@@ -32,6 +33,7 @@ function Listing() {
   const [filters, setFilters] = useState({})
   const [sort, setSort] = useState(null) 
   const [searchParams,setSearchParams] = useSearchParams()
+  const [open, setOpen] = useState(false)
 
   function handleSort(value){
     setSort(value)
@@ -77,6 +79,12 @@ function Listing() {
       setSearchParams(new URLSearchParams(createQueryString))
     }
   },[filters])
+
+  useEffect(()=>{
+    if(productDetails !== null){
+      setOpen(true)
+    }
+  },[productDetails])
   
   console.log(filters, searchParams ,"Filters")
   
@@ -118,6 +126,7 @@ function Listing() {
             }
            </div>
        </div>
+       <ProductsDetails open={open} setOpen={setOpen} productDetails={productDetails}></ProductsDetails>
      </div>
   )
 }
