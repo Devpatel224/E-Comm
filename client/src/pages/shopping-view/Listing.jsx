@@ -7,7 +7,7 @@ import { DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
 import { DropdownMenuContent, DropdownMenuRadioGroup, DropdownMenuRadioItem } from '@/components/ui/dropdown-menu'
 import { sortOptions } from '@/config'
 import { useDispatch, useSelector } from 'react-redux'
-import { fetchAllFilteredProducts } from '@/store/shop/product-slice'
+import { fetchAllFilteredProducts , fetchProductDetails} from '@/store/shop/product-slice'
 import ProductTile from '@/components/shopping-view/ProductTile'
 import { useSearchParams } from 'react-router-dom'
 
@@ -18,21 +18,17 @@ function createSearchParamsHelper(filters){
     
     if(Array.isArray(value) && value.length > 0){
       const paramValue = value.join(',')  
-        
-      console.log(paramValue , "paramValue");
+   
       queryParams.push(`${key}=${encodeURIComponent(paramValue)}`)
     }
-  }
-
-  console.log(queryParams , "queryparams");
-  
+  }  
   return queryParams.join('&')
 }
 
 
 function Listing() {
   const dispatch = useDispatch()
-  const {products} = useSelector((state)=>state.shopProducts)
+  const {products , productDetails} = useSelector((state)=>state.shopProducts)
   const [filters, setFilters] = useState({})
   const [sort, setSort] = useState(null) 
   const [searchParams,setSearchParams] = useSearchParams()
@@ -58,6 +54,11 @@ function Listing() {
 
   setFilters(cpyFilters)
   sessionStorage.setItem('filters',JSON.stringify(cpyFilters))
+ }
+
+ function handleGetProductDetails(productId){  
+   dispatch(fetchProductDetails(productId))
+   console.log(productDetails)
  }
 
  useEffect(()=>{
@@ -112,7 +113,7 @@ function Listing() {
            <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 p-4'>
             {
               products.map((product)=>(
-                <ProductTile product={product} key={product._id} />
+                <ProductTile product={product} key={product._id} handleGetProductDetails={handleGetProductDetails} />
               ))
             }
            </div>

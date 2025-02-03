@@ -3,7 +3,6 @@ const productModel = require('../../models/Product')
 
 const getFilteredProducts = async(req,res,next)=>{
     try{
-
         let {category = [] , brand = [] , sortBy = "price-lowtohigh"} = req.query
 
         let filters = {};
@@ -45,4 +44,25 @@ const getFilteredProducts = async(req,res,next)=>{
     }
 }
 
-module.exports = {getFilteredProducts}
+const getProductDetails = async(req,res,next)=>{
+    try{
+        const {id} = req.params;
+
+        const product = await productModel.findById(id);
+        if(!product){
+            return res.status(404).json({
+                success:false,
+                message:"Product not found"
+            })
+        }
+
+        res.status(200).json({
+            success:true,
+            data:product,
+        })
+    }catch(e){
+        next(e)
+    }
+}
+
+module.exports = {getFilteredProducts , getProductDetails}

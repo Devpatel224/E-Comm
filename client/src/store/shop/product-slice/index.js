@@ -2,10 +2,10 @@ import { createSlice,createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
 
-
 const initialState = {
     products:[],
     isLoading:false,
+    productDetails : null
 }
 
 export const fetchAllFilteredProducts = createAsyncThunk('/products/fetchAllFilteredProducts',
@@ -28,6 +28,23 @@ export const fetchAllFilteredProducts = createAsyncThunk('/products/fetchAllFilt
         }
 })
 
+export const fetchProductDetails = createAsyncThunk('/products/fetchProductDetails',
+    async (id,{rejectWithValue})=>{
+        try{                   
+            const res = await axios.get(`http://localhost:3000/shop/products/get/${id}`)
+
+        return res?.data
+    }
+        catch(err){
+            if(err.response && err.response.data){
+                return rejectWithValue(err.response.data.message || "Some Error Occurs")
+            }
+            else return rejectWithValue("Something Went Wrong")
+        }
+})
+
+
+
 const shopProductSlice = createSlice({
     name:"shoppingProducts",
     initialState,
@@ -44,6 +61,17 @@ const shopProductSlice = createSlice({
         .addCase(fetchAllFilteredProducts.rejected,(state,action)=>{
             state.isLoading = false
             state.products = []
+        })
+        .addCase(fetchProductDetails.pending,(state,action)=>{
+            state.isLoading = true;
+        })
+        .addCase(fetchProductDetails.fulfilled,(state,action)=>{
+            state.isLoading = false
+            state.productDetails = action.payload.data
+        })
+        .addCase(fetchProductDetails.rejected,(state,action)=>{
+            state.isLoading = false
+            state.productDetails = null
         })
     }
 })
