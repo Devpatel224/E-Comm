@@ -37,6 +37,7 @@ const addToCart = async (req, res, next) => {
     next(e);
   }
 };
+
 const fetchToCart = async (req, res, next) => {
   try {
     const {userId} = req.body;
@@ -80,12 +81,58 @@ const fetchToCart = async (req, res, next) => {
     next(e);
   }
 };
+
+
 const updateCartItemQty = async (req, res, next) => {
   try {
+    const {userId,productId,quantity} = req.body;
+
+    if(!userId || !productId || quantity <= 0){
+        next(createCustomeError(401,"Invalid Data Provided"))
+    }
+
+    const cart = await cart.findOne({userId});
+
+    if(!cart) next(createCustomeError(404,"Cart Not Found"));
+
+    const findCurrentProductIndex = cart.items.findIndex(item => item.productId.toString() === productId)
+
+    if(findCurrentProductIndex === -1){
+        next(createCustomeError(404,"Product Not Found in Cart"))
+    }
+
+    cart.items[findCurrentProductIndex].quantity = quantity;
+    await cart.save()
+
+    await cart.populate({
+        path:'items.productId',
+        select : 'image title price salePrice'
+    })
+
+    const populateCartItems = cart.items.map(item => ({
+        productId: item.productId ? item.productId._id : null,
+        image: item.productId ? item.productId.image : null,
+        price: item.productId ? item.productId.price : null,
+        salePrice: item.productId ? item.productId.salePrice : null,
+        title: item.productId ? item.productId.title : "Prodcut Not Found",
+        quantity: item.quantity 
+    }));
+    
+
+    res.status(200).json({
+        success:true,
+        data : {
+            ...cart._doc,  // send only raw data exclude methods like save , populate etc from mongoose object
+            items : populateCartItems // send newly created items
+        } 
+    })
+
   } catch (e) {
     next(e);
   }
 };
+
+
 const deleteCartItem = async (req, res, next) => {
   try {
   } catch (e) {
