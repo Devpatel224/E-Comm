@@ -16,6 +16,7 @@ const registerUser = async (req, res, next) => {
         const exitedUser = await userModel.findOne({
             $or:[{email},{username}],
         });
+        
         if(exitedUser){
             return next(createCustomeError(401,"User Already Exits"))
         }          

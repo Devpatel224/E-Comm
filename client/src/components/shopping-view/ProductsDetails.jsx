@@ -7,7 +7,7 @@ import { Input } from '../ui/input'
 
 
 function ProductsDetails({open, setOpen,productDetails}) {
-    console.log(productDetails?.salePrice)
+    
   return (
     <Dialog open={open} onOpenChange={setOpen}>
         <DialogContent className='grid grid-cols-2 gap-8 sm:p-12 max-w-[90vw] sm:max-w-[80vw] md:max-w-[70vw] lg:max-w-[70vw]'>
