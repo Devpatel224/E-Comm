@@ -22,7 +22,6 @@ function Login() {
       e.preventDefault()
       
       dispatch(loginUser(formData)).then((data) => {
-        console.log(data)
         if(data?.payload?.success){
           toast({
             title:data?.payload?.message

@@ -1,5 +1,5 @@
-const Cart = require('../../models/Cart');
-const product = require('../../models/Product');
+const productModel = require('../../models/Product');
+const cartModel = require('../../models/Cart');
 const { createCustomeError } = require('../../utils/customeError');
 
 
@@ -11,13 +11,13 @@ const addToCart = async (req, res, next) => {
         next(createCustomeError(401,"Invalid Data Provided"))
     }
 
-    const product = await product.findById(productId)
+    const product = await productModel.findById(productId)
     if(!product) next(createCustomeError(404,"Product Not Found"))
 
-    let cart = await Cart.findOne({userId});
+    let cart = await cartModel.findOne({userId});
     
     if(!cart){
-        cart = await Cart.create({userId,items:[]})
+        cart = await cartModel.create({userId,items:[]})
     }
     const findCurrentProductIndex = cart.items.findIndex(item => item.productId.toString() === productId)
 
@@ -27,7 +27,7 @@ const addToCart = async (req, res, next) => {
         cart.items[findCurrentProductIndex].quantity += quantity;
     }
 
-    await Cart.save()
+    await cart.save()
 
     return res.status(200).json({
         success : true,
@@ -40,13 +40,13 @@ const addToCart = async (req, res, next) => {
 
 const fetchToCart = async (req, res, next) => {
   try {
-    const {userId} = req.body;
+    const {userId} = req.params;
 
     if(!userId){
         next(createCustomeError(401,"Invalid Data Provided"))
     }
 
-    const cart = await cart.findOne({userId}).populate({
+    const cart = await cartModel.findOne({userId}).populate({
         path : 'items.productId',
         select : 'image title price salePrice'
     })
@@ -91,7 +91,7 @@ const updateCartItemQty = async (req, res, next) => {
         next(createCustomeError(401,"Invalid Data Provided"))
     }
 
-    const cart = await cart.findOne({userId});
+    const cart = await cartModel.findOne({userId});
 
     if(!cart) next(createCustomeError(404,"Cart Not Found"));
 
@@ -135,25 +135,25 @@ const updateCartItemQty = async (req, res, next) => {
 
 const deleteCartItem = async (req, res, next) => {
   try {
-    const {userId,productId} = req.body;
+    const {userId,productId} = req.params;
 
     if(!userId || !productId){
-        next(createCustomeError(401,"Invalid Data Provided"))
+       return  next(createCustomeError(401,"Invalid Data Provided"))
     }
 
-    const cart = await cart.findOne({userId}).populate({
+    const cart = await cartModel.findOne({userId}).populate({
         path : 'items.productId',
         select : 'image title price salePrice'
     })
     
 
-    if(!cart) next(createCustomeError(404,"Cart Not Found"));
+    if(!cart)  return next(createCustomeError(404,"Cart Not Found"));
 
     const findCurrentProductIndex = cart.items.findIndex(item => item.productId.toString() === productId)
-
-    if(findCurrentProductIndex === -1){
-        next(createCustomeError(404,"Product Not Found in Cart"))
-    }
+    
+    // if(findCurrentProductIndex === -1){   
+    //     return next(createCustomeError(404,"Product Not Found in Cart"))
+    // }
 
     cart.items = cart.items.filter(item => item.productId._id.toString() !== productId);
 
@@ -182,7 +182,7 @@ const deleteCartItem = async (req, res, next) => {
     })
     
   } catch (e) {
-    next(e);
+    return next(e);
   }
 };
 

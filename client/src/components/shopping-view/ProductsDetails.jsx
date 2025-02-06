@@ -5,8 +5,36 @@ import { Avatar, AvatarFallback } from '../ui/avatar'
 import { StarIcon } from 'lucide-react'
 import { Input } from '../ui/input'
 
+import { useDispatch, useSelector } from 'react-redux'
+import { addToCart, fetchCartItems } from '@/store/shop/cart-slice'
+import { useToast } from '@/hooks/use-toast'
+
 
 function ProductsDetails({open, setOpen,productDetails}) {
+ 
+// console.log(productDetails._id)
+    
+    const dispatch = useDispatch()
+    const { user } = useSelector((state) => state.auth)
+    const toast = useToast()
+  function handleAddToCart(getCurrentProductId) {
+    console.log(getCurrentProductId);
+    
+    dispatch(addToCart({ userId: user?.id,
+       productId: getCurrentProductId,
+      quantity: 1 })
+    )
+    .then((data)=>{
+      if(data.payload?.success){
+        dispatch(fetchCartItems(user?.id))
+        toast({
+            title : "Product Successfully Added to Cart"
+        })
+      }
+  }
+)
+    }
+
     
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -35,7 +63,7 @@ function ProductsDetails({open, setOpen,productDetails}) {
                                 <span className='text-primary '>(4.5)</span>
             </div>
             <div className='mt-4 mb-5'>
-                <button className='bg-primary text-white px-4 py-2 rounded-lg w-full'>Add to cart</button>
+                <button onClick={()=>handleAddToCart(productDetails?._id)} className='bg-primary text-white px-4 py-2 rounded-lg w-full'>Add to cart</button>
             </div>
             <Separator/>
                 <div className='max-h-[300px] overflow-auto'>

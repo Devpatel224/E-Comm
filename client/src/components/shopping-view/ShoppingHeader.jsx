@@ -11,7 +11,8 @@ import { logoutUser } from "@/store/auth-slice"
 import { useToast } from '@/hooks/use-toast'
 import { useDispatch } from "react-redux"
 import CartWrapper from "./CartWrapper"
-import { useState } from "react"
+import { useState , useEffect } from "react"
+import { fetchCartItems } from "@/store/shop/cart-slice"
 
 const MenuItems = ()=>{
   return <nav className="flex flex-col mb-3 lg:mb-0 gap-6 lg:items-center lg:flex-row">
@@ -25,6 +26,8 @@ const HeaderRightContent = ()=>{
 
   const {user} = useSelector(state=>state.auth)
   const [openCartSheet, setOpenCartSheet] = useState(false)
+    const {cartItems} = useSelector((state)=>state.shopCart)
+  
 
   const navigate = useNavigate()
   const dispatch = useDispatch()
@@ -46,7 +49,7 @@ const HeaderRightContent = ()=>{
       <ShoppingCart className="w-6 h-6"/>
       <span className="sr-only">User Cart</span>
       </Button>
-      <CartWrapper />
+      <CartWrapper cartItems={cartItems && cartItems.items && cartItems.items.length > 0 ? cartItems.items : []}/>
       </Sheet>
 
       <DropdownMenu >
@@ -76,7 +79,12 @@ const HeaderRightContent = ()=>{
 
 function ShoppingHeader() {
   const {isAuthenticated , user} = useSelector(state=>state.auth)
-   
+   const dispatch= useDispatch()
+
+  useEffect(() => {
+      dispatch(fetchCartItems(user?.id))
+     }, [dispatch])
+  
   return (
     <header className='sticky  top-0 z-40 w-full border-b bg-background'>
       <div className='h-16 flex items-center justify-between px-4 md:px6'>

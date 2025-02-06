@@ -7,8 +7,7 @@ import { CardTitle } from '../ui/card'
 
 
 
-function ProductTile({product,handleGetProductDetails}) {
-
+function ProductTile({product,handleGetProductDetails,handleAddToCart}){
 
   return (
     <Card className='w-full max-w-80 mx-auto hover:scale-105 transition-all duration-300'>
@@ -35,12 +34,12 @@ function ProductTile({product,handleGetProductDetails}) {
                 }
             </div>
         </CardContent>
+       </div>
         <CardFooter>
-            <Button className='w-full'>
+            <Button className='w-full' onClick={()=>handleAddToCart(product?._id)}>
                 Add to Cart
             </Button>
         </CardFooter>
-       </div>
     </Card>
   )
 }
