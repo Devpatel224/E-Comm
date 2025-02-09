@@ -11,7 +11,7 @@ function ProductTile({product,handleGetProductDetails,handleAddToCart}){
 
   return (
     <Card className='w-full max-w-80 mx-auto hover:scale-105 transition-all duration-300'>
-
+       
        <div onClick={()=>handleGetProductDetails(product._id)}>
         <div className='relative overflow-hidden'>
             <img src={product.image} alt={product.title}  className='w-full h-[300px] rounded-t-lg object-cover hover:scale-110 transition-all duration-500' />

@@ -91,7 +91,7 @@ function Listing() {
 
   useEffect(() => {
     dispatch(fetchAllFilteredProducts({ filterParams: filters, sortParams: sort }))
-  }, [dispatch, sort, filters])
+  }, [dispatch, sort, filters , searchParams])
 
   useEffect(() => {
     if (filters && Object.keys(filters).length > 0) {

@@ -13,11 +13,43 @@ import { useDispatch } from "react-redux"
 import CartWrapper from "./CartWrapper"
 import { useState , useEffect } from "react"
 import { fetchCartItems } from "@/store/shop/cart-slice"
+import { fetchAllFilteredProducts } from "@/store/shop/product-slice"
 
 const MenuItems = ()=>{
+
+  const navigate = useNavigate()
+  const dispatch = useDispatch()
+  
+  const handleNavigateToPages = (menuItem)=>{
+    sessionStorage.removeItem('filters')    
+    
+    const currentFilters = menuItem.id !== 'home' && menuItem.id !== 'products' ? {
+      'category' : [menuItem.id]
+    }:null;
+   
+    sessionStorage.setItem('filters',JSON.stringify(currentFilters))
+    
+    navigate(menuItem.path)
+
+    if(menuItem.id !== 'home' && menuItem.id !== 'products' ){
+      setTimeout(() => {
+        dispatch(
+          fetchAllFilteredProducts({ filterParams: currentFilters, sortParams: "price-lowtohigh" })
+        );
+      }, 0);
+    }
+    
+  }
+
+  // useEffect(()=>{
+  //   sessionStorage.getItem("filters")
+  //   const filters = JSON.parse(sessionStorage.getItem("filters"))
+  //   dispatch(fetchAllFilteredProducts({filterParams:{filters},sortParams:"price-lowtohigh"}))
+  // },)
+  
   return <nav className="flex flex-col mb-3 lg:mb-0 gap-6 lg:items-center lg:flex-row">
       {
-        shoppingViewHeaderMenuItems.map(menuItem=><Link className="text-sm" key={menuItem.id} to={menuItem.path}>{menuItem.label}</Link>)
+        shoppingViewHeaderMenuItems.map(menuItem=><label  onClick={()=>handleNavigateToPages(menuItem)} className="text-sm cursor-pointer" key={menuItem.id} to={menuItem.path}>{menuItem.label}</label>)
       }
   </nav>
 }
@@ -26,7 +58,7 @@ const HeaderRightContent = ()=>{
 
   const {user} = useSelector(state=>state.auth)
   const [openCartSheet, setOpenCartSheet] = useState(false)
-    const {cartItems} = useSelector((state)=>state.shopCart)
+  const {cartItems} = useSelector((state)=>state.shopCart)
   
 
   const navigate = useNavigate()
@@ -63,12 +95,12 @@ const HeaderRightContent = ()=>{
         <DropdownMenuContent side="right" className="w-56 bg-background border-[1px] border-border p-2">
           <DropdownMenuLabel className="text-base font-medium mb-2">Logged in as {user?.username}</DropdownMenuLabel>
           <DropdownMenuSeparator />
-          <DropdownMenuItem className="flex items-center mb-1" onClick={() => navigate("/shop/account")}>
-            <UserCog className="mr-2 h-4 w-4" />
+          <DropdownMenuItem className="flex items-center mb-1 cursor-pointer" onClick={() => navigate("/shop/account")}>
+            <UserCog className="mr-2 h-4 w-4 " />
             Account
           </DropdownMenuItem>
           <DropdownMenuSeparator />
-          <DropdownMenuItem className="flex items-center" onClick={handleLogout}>
+          <DropdownMenuItem className="flex items-center cursor-pointer" onClick={handleLogout}>
             <LogOut className="mr-2 h-4 w-4"/>
             Logout
           </DropdownMenuItem>

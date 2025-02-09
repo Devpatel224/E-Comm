@@ -18,6 +18,7 @@ function ProductsDetails({open, setOpen,productDetails}) {
     const dispatch = useDispatch()
     const { user } = useSelector((state) => state.auth)
     const toast = useToast()
+    
    function handleAddToCart(getCurrentProductId) { 
     dispatch(addToCart({ userId: user?.id,
        productId: getCurrentProductId,
