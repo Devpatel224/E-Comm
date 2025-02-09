@@ -7,6 +7,7 @@ const authRouter = require('./routes/auth/auth-route')
 const adminProductsRouter = require("./routes/admin/products-routes")
 const shopProductsRouter = require("./routes/shop/products-routes")
 const shopCartRouter = require("./routes/shop/cart-routes")
+const addressRouter = require("./routes/shop/address-routes")
 
 const app = express()
 const PORT = process.env.PORT || 3000
@@ -49,6 +50,7 @@ app.use('/auth',authRouter)
 app.use('/admin/products',adminProductsRouter)
 app.use('/shop/products',shopProductsRouter)
 app.use('/shop/cart',shopCartRouter)
+app.use('/shop/address',addressRouter)
 
 app.use((err,req,res,next)=>{
   let statuscode = err.statuscode || 500
