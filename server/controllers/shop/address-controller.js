@@ -1,4 +1,4 @@
-const addressModel = require('../../models/shop/Address')
+const addressModel = require('../../models/Address')
 const { createCustomeError } = require('../../utils/customeError')
 
 const addAddress = async (req,res,next)=>{

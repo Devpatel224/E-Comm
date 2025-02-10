@@ -7,6 +7,6 @@ const AddressSchema = new mongoose.Schema({
     pincode: String,
     phone : String,
     notes :String,
-},[timeSpamps = true]);
+},{timeSpamps : true});
 
 module.exports = mongoose.model("Address", AddressSchema);
