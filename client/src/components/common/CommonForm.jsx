@@ -26,6 +26,7 @@ function CommonForm({ formControls, formData, setFormData, onsubmit, buttonText 
             placeholder={controlItem.placeholder}
             type={controlItem.type}
             value={value}
+            className={controlItem.className ? controlItem.className : ''} 
             onChange={event => setFormData({
               ...formData,
               [controlItem.name]: event.target.value
@@ -87,7 +88,7 @@ function CommonForm({ formControls, formData, setFormData, onsubmit, buttonText 
         break;
     }
     return element
-  }
+}
 
   return (
     <form onSubmit={onsubmit}>

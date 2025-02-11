@@ -3,10 +3,11 @@ const { createCustomeError } = require('../../utils/customeError')
 
 const addAddress = async (req,res,next)=>{
     try {
+        console.log(req.body)
         const { userId, address, city ,pincode, phone,notes} = req.body
-
-        if(!userId || !address || !city || !pincode|| !phone|| !notes){
-            next(createCustomeError(401,"Invalid Data"))
+       
+        if(!userId || !address || !city || !pincode || !phone|| !notes){
+            return next(createCustomeError(401,"Invalid Data"))
         }
 
         const newAddress = await addressModel.create({
@@ -14,11 +15,11 @@ const addAddress = async (req,res,next)=>{
         })
 
         res.status(201).json({
-            success:true,
+            success:true, 
             data:newAddress
         })
     } catch(error) {
-        next(error)
+        return next(error)
     }
 }
 
@@ -35,7 +36,7 @@ const fetchAllAddress = async (req,res,next)=>{
             data:address
          })
     } catch(error) {
-        next(error)
+       return next(error)
     }
 }
 
@@ -57,7 +58,7 @@ const editAddress = async (req,res,next)=>{
             data:address
          })   
     } catch(error) {
-        next(error)
+       return next(error)
     }
 }
 
@@ -79,7 +80,7 @@ const deleteAddress = async (req,res,next)=>{
                 data:address
             })   
     } catch(error) {
-        next(error)
+       return next(error)
     }
 }
 

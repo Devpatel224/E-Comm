@@ -209,14 +209,16 @@ export const addProductFormElements = [
       label: "Pincode",
       name: "pincode",
       componentType: "input",
-      type: "text",
+      type: "number",
+      className:"appearance-none [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none border border-gray-300 rounded px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500",
       placeholder: "Enter your pincode",
     },
     {
       label: "Phone",
       name: "phone",
       componentType: "input",
-      type: "text",
+      type: "number",
+      className : "appearance-none [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none border border-gray-300 rounded px-2 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500",
       placeholder: "Enter your phone number",
     },
     {

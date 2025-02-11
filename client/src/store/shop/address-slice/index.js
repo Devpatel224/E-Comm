@@ -7,17 +7,20 @@ const initialState = {
 }
 
 export const addAddress = createAsyncThunk('/address/add',
-    async ({data},{rejectWithValue})=>{        
+    async (data,{rejectWithValue})=>{        
             try{
+
               const res = await axios.post("http://localhost:3000/shop/address/add",data,{
-                withCredentials:true
+                withCredentials:true,
+                headers:{
+                    'Content-Type':'application/json'
+                }
               })  
 
               return res?.data
             }
-            catch(e){
+            catch(err){
                 if(err.response && err.response.data){
-
                     return rejectWithValue(err.response.data || "Invalid Data")
                 }
                 else{
@@ -30,7 +33,7 @@ export const addAddress = createAsyncThunk('/address/add',
 export const fetchAddress = createAsyncThunk('/address/fetch',
     async ({userId},{rejectWithValue})=>{        
             try{
-              const res = await axios.get(`http://localhost:3000/shop/address/fetch/${userId}`,{
+              const res = await axios.get(`http://localhost:3000/shop/address/get/${userId}`,{
                 withCredentials:true
               })  
 
@@ -47,10 +50,10 @@ export const fetchAddress = createAsyncThunk('/address/fetch',
             }
   }
 )
-export const updateAddress = createAsyncThunk('/address/edit',
-    async ({userId,addressId},{rejectWithValue})=>{        
+export const editAddress = createAsyncThunk('/address/edit',
+    async ({userId,addressId,formData},{rejectWithValue})=>{        
             try{
-              const res = await axios.put(`http://localhost:3000/shop/address/fetch/${userId}/${addressId}`,{
+              const res = await axios.put(`http://localhost:3000/shop/address/edit/${userId}/${addressId}`,formData,{
                 withCredentials:true
               })  
 
@@ -70,7 +73,7 @@ export const updateAddress = createAsyncThunk('/address/edit',
 export const deleteAddress = createAsyncThunk('/address/delete',
     async ({userId,addressId},{rejectWithValue})=>{        
             try{
-              const res = await axios.delete(`http://localhost:3000/shop/address/fetch/${userId}/${addressId}`,{
+              const res = await axios.delete(`http://localhost:3000/shop/address/delete/${userId}/${addressId}`,{
                 withCredentials:true
               })  
 
@@ -99,11 +102,9 @@ const addressSlice = createSlice({
         })
         .addCase(addAddress.fulfilled,(state,action)=>{
             state.isLoading = false
-            state.addressList = action.payload.data
         })
         .addCase(addAddress.rejected,(state)=>{
             state.isLoading = false
-            state.addressList = []
         })
 
         .addCase(fetchAddress.pending,(state)=>{
@@ -118,14 +119,14 @@ const addressSlice = createSlice({
             state.addressList = []
         })
 
-        .addCase(updateAddress.pending,(state)=>{
+        .addCase(editAddress.pending,(state)=>{
             state.isLoading = true
         })
-        .addCase(updateAddress.fulfilled,(state,action)=>{
+        .addCase(editAddress.fulfilled,(state,action)=>{
             state.isLoading = false
             state.addressList = action.payload.data
         })
-        .addCase(updateAddress.rejected,(state)=>{
+        .addCase(editAddress.rejected,(state)=>{
             state.isLoading = false
             state.addressList = []
         })
