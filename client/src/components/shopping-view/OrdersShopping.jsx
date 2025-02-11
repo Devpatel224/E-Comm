@@ -1,9 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../ui/table";
 import { Button } from "../ui/button";
+import { Dialog } from "../ui/dialog";
+import OrderDetails from "../shopping-view/OrdersDetails";
 
 function  OrdersShopping() {
+  const [openDetailsDialog,setOpenDetailsDialog] = useState(false)
+
   return (
     <Card className="mt-8 p-0">
       <CardHeader>
@@ -28,8 +32,11 @@ function  OrdersShopping() {
               <TableCell>27/06/2025</TableCell>
               <TableCell>InProcess</TableCell>
               <TableCell>$1000</TableCell>
-              <TableCell >
-                  <Button>View Details</Button>
+              <TableCell>
+                <Dialog open={openDetailsDialog} setOpen={setOpenDetailsDialog}>
+                  <Button onClick={()=>setOpenDetailsDialog(true)}>View Details</Button>
+                  <OrderDetails></OrderDetails>
+                </Dialog>
                 </TableCell>
             </TableRow>
           </TableBody>

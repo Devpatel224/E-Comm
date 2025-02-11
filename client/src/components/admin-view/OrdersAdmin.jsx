@@ -1,8 +1,14 @@
 
-import React from 'react'
+import React , {useState} from 'react'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../ui/table";
+import { Card , CardHeader , CardTitle ,CardContent  } from '../ui/card';
+import { Button } from '../ui/button';
+import { Dialog } from '../ui/dialog';
+import OrderDetails from './OrderDetails';
+
 
 function OrdersAdmin() {
+  const [openDetailsDialog,setOpenDetailsDialog] = useState(false)
   return (
     <Card>
           <CardHeader>
@@ -30,7 +36,11 @@ function OrdersAdmin() {
                         <TableCell>InProcess</TableCell>
                         <TableCell>$1000</TableCell>
                         <TableCell >
-                            <Button>View Details</Button>
+                        <Dialog open={openDetailsDialog} onOpenChange={setOpenDetailsDialog}>
+                  <Button onClick={()=>setOpenDetailsDialog(true)}>View Details</Button>
+                  <OrderDetails
+                  ></OrderDetails>
+                </Dialog>
                           </TableCell>
                       </TableRow>
                     </TableBody>
