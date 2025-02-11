@@ -1,11 +1,11 @@
 import React , {useState} from 'react'
 import accImg from '../../assets/account.jpg'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import Orders from '@/components/shopping-view/Orders';
+import OrdersShopping from '@/components/shopping-view/OrdersShopping';
 import Address from '@/components/shopping-view/Address';
 
 function Account() {
-  const [activeTab, setActiveTab] = useState("orders");
+
 
   return (
     <div className='flex flex-col '>
@@ -20,7 +20,7 @@ function Account() {
               <TabsTrigger value='address'>Address</TabsTrigger>
              </TabsList>
              <TabsContent value='orders'>
-                 <Orders/>
+                 <OrdersShopping/>
              </TabsContent>
              <TabsContent value='address'>
                  <Address/>
