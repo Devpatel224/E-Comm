@@ -92,7 +92,7 @@ const HeaderRightContent = ()=>{
             </AvatarFallback>
           </Avatar>
         </DropdownMenuTrigger>
-        <DropdownMenuContent side="right" className="w-56 bg-background border-[1px] border-border p-2">
+        <DropdownMenuContent align="end" className="w-56 bg-background border-[1px] border-border p-2">
           <DropdownMenuLabel className="text-base font-medium mb-2">Logged in as {user?.username}</DropdownMenuLabel>
           <DropdownMenuSeparator />
           <DropdownMenuItem className="flex items-center mb-1 cursor-pointer" onClick={() => navigate("/shop/account")}>
@@ -124,7 +124,7 @@ function ShoppingHeader() {
         <HousePlug className="h-6 w-6"/>
         <span className="font-bold">ECommerce</span>
         </Link> 
-        <Sheet>
+        <Sheet> 
           <SheetTrigger asChild>
               <Button variant='outilne' size='icon' className="lg:hidden">
               <Menu className="h-6 w-6"/>

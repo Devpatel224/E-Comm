@@ -26,6 +26,7 @@ export const addToCart = createAsyncThunk('cart/addToCart',
         }
     }
 )
+
 export const fetchCartItems = createAsyncThunk('cart/getCartItems',
     async (userId,{rejectWithValue})=>{
         try{

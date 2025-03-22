@@ -10,10 +10,12 @@ user:null
 
 export const registerUser = createAsyncThunk('/auth/register',
     async(formData,{rejectWithValue})=>{
-        try{const res = await axios.post("http://localhost:3000/auth/register",formData,{
+        try{
+            const res = await axios.post("http://localhost:3000/auth/register",formData,{
             withCredentials: true,
         })
-        return res.data;}
+        return res.data;
+    }
         catch(e){
             if(e.response && e.response.data){
                 return rejectWithValue(e.response.data.message || "Registration Fails")
@@ -97,6 +99,7 @@ const authSlice = createSlice({
             state.user = null
             state.isAuthenticated = false
         })
+        
         .addCase(loginUser.pending,(state)=>{
             state.isLoading  = true
         }).addCase(loginUser.fulfilled,(state,action)=>{

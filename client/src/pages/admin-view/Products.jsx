@@ -106,6 +106,7 @@ function AdminProducts() {
             imageLoadingState={imageLoadingState}
             isEditMode={currentEditedId}
             />
+            
             <div className='py-6'>
               <CommonForm
                 formControls={addProductFormElements}
