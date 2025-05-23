@@ -15,7 +15,7 @@ const initialeAddressFormData = {
   notes : ''
 }
 
-function Address() {
+function Address({setCurrentSelectedAddress,currentSelectedAddress}) {
   const [formData, setFormData] = useState(initialeAddressFormData)
   const [currentEditedId,setCurrentEditedId] = useState(null)
   const dispatch = useDispatch()
@@ -91,7 +91,7 @@ function Address() {
   function isFormValid(){
     return Object.keys(formData).map(key => formData[key] !== '').every(value => value)
   }
-
+  
   useEffect(()=>{
     dispatch(fetchAddress({userId: user?.id}))
   },[dispatch])
@@ -101,7 +101,7 @@ function Address() {
       <div className="mb-5 p-3 grid grid-cols-1 sm:grid-cols-2   gap-2">
         {
           addressList && addressList.length > 0 ?
-          addressList.map((addressItem)=> <AddressCard key={addressItem._id} addressInfo={addressItem} handleDeleteAddress={handleDeleteAddress} setCurrentEditedId={setCurrentEditedId} handleEditAddress={handleEditAddress}/>) : null
+          addressList.map((addressItem)=> <AddressCard key={addressItem._id} addressInfo={addressItem} handleDeleteAddress={handleDeleteAddress} setCurrentEditedId={setCurrentEditedId} handleEditAddress={handleEditAddress}/> ) : null
         }
       </div>
       <CardHeader>

@@ -17,7 +17,7 @@ const PORT = process.env.PORT || 3000
 require('dotenv').config()
 
 
-mongoose.connect("mongodb+srv://devpatel9773:devpatel2204@cluster0.cx3o3.mongodb.net/")
+mongoose.connect(process.env.MONGO_URL)
 .then(()=>{
     console.log("Db connected")
 })
